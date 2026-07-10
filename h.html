@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق فيديوهات ذكي بدون صور</title>
+</head>
+<style>
+    /* ======================================================== */
+    /* 1. التنسيقات العامة والأساسية للموقع */
+    /* ======================================================== */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background-color: #ffffff;
+    }
+
+    .app-container {
+        display: flex;
+        width: 100%;
+    }
+
+    /* ======================================================== */
+    /* 2. تنسيقات القائمة الجانبية اليمنى الثابتة */
+    /* ======================================================== */
+    .popo {
+        background: #ffffff;
+        width: 15%;
+        padding-left: 10px;
+        border-left: 1px solid #dadada80;
+        height: 100vh;
+        overflow-y: auto;
+    }
+
+    .w {
+        color: black;
+        padding: 10px;
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .w:hover {
+        background: #cccccc;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #dadada80;
+        margin: 10px 0;
+    }
+
+    /* ======================================================== */
+    /* 3. تنسيقات الجهة اليسرى (منطقة المحتوى الرئيسية) */
+    /* ======================================================== */
+    .main-content {
+        width: 85%;
+        padding: 20px;
+        background: #ffffff;
+    }
+
+    .d {
+        margin: 2px;
+        padding: 6px 14px;
+        text-decoration: none;
+        color: black;
+        background: #d4d4d481;
+        border-radius: 10px;
+        display: inline-block;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .d:hover {
+        background: #cccccc;
+    }
+
+    .videos-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    /* ======================================================== */
+    /* 4. تنسيقات كروت الفيديو الذكية (تعتمد على الفيديو كخلفية) */
+    /* ======================================================== */
+    .k1 {
+        position: relative;
+        width: 31%;
+        /* لعرض 3 فيديوهات بجانب بعضها أفقياً على نفس السطر */
+        display: inline-block;
+        margin-top: 15px;
+        cursor: pointer;
+        vertical-align: top;
+    }
+
+    .video-thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    /* جعل كرت الفيديو بالرئيسية يظهر أول لقطة منه كصورة مصغرة ثابته ومستقيمة */
+    .video-thumbnail-wrapper video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        pointer-events: none;
+        /* يمنع تشغيل الفيديو داخل الكرت بالصفحة الأولى */
+    }
+
+    .e1 {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        background: #141414e0;
+        color: #ffffff;
+        border-radius: 4px;
+        padding: 3px 6px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 2;
+    }
+
+    .f1 {
+        font-size: 15px;
+        margin: 10px 0 5px 0;
+        color: black;
+        line-height: 1.4;
+    }
+
+    .k2 {
+        font-size: 13px;
+        color: #808080;
+        margin-top: 5px;
+    }
+
+    /* ======================================================== */
+    /* 5. تنسيقات واجهة تشغيل الفيديو الكبيرة المفرغة */
+    /* ======================================================== */
+    .watch-page-container {
+        display: none;
+        width: 100%;
+    }
+
+    .right-video-column {
+        width: 100%;
+    }
+
+    .video-player-box video {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+        display: block;
+        background: #000;
+        aspect-ratio: 16 / 9;
+    }
+
+    .sss {
+        width: 100%;
+        background: #ffffff;
+        height: auto;
+        margin-top: 15px;
+    }
+
+    .jkj {
+        color: #aaa6a6;
+        margin: 5px 0;
+    }
+
+    .lll {
+        gap: 15px;
+        display: flex;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+    }
+
+    .qqq1 {
+        font-size: 16px;
+        padding: 8px 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        white-space: nowrap;
+        border: none;
+        background: #e7e7e7d0;
+        cursor: pointer;
+    }
+
+    .qqq1:hover {
+        background: #cccccc93;
+    }
+</style>
+
+<body>
+
+    <div class="app-container" id="main-interface">
+
+        <!-- الجهة الأولى: القائمة الجانبية اليمنى الثابتة مالتك -->
+        <div class="popo">
+            <img src="vecteezy_hamburger-menu-filled-icon-in-transparent-background-basic_21190402.jpg" class="oo"
+                alt="" width="50px">
+            <p class="w" onclick="closeVideoPlayer()">صفحه رئيسية⌂</p>
+            <h1 class="w">shorts</h1>
+            <hr>
+            <p class="w">الاشتراكات ></p>
+            <p class="w">EGi squad</p>
+            <p class="w">فارس/faris</p>
+            <p class="w">Mustafa Galab كلاب </p>
+            <p class="w">Basim Karbalaei ((•))</p>
+            <hr>
+            <p class="w">انت></p>
+            <p class="w">قناتك👤</p>
+            <p class="w" onclick="showHistoryVideos()">سجل⟲ </p>
+            <p class="w" onclick="showWatchLaterVideos()">المشاهدةلاحقاء🕒</p>
+            <p class="w" onclick="showLikedVideos()">الفيديوهات التي اعجبتني👍</p>
+            <p class="w">فيديوهات🎬</p>
+            <p class="w">عمليات التنزيل⬇️</p>
+        </div>
+
+        <!-- الجهة اليسرى الكلية للمحتوى -->
+        <div class="main-content">
+
+            <!-- الواجهة الأولى: الصفحة الرئيسية (تحتوي على صف الكروت أفقياً بجانب بعضها بدون صور) -->
+            <div id="home-view-container">
+                <div class="categories-bar">
+                    <a class="d" href="#">كل محتوى </a>
+                    <a class="d" href="#">مباشر</a>
+                    <a class="d" href="#">برامج كوميدية</a>
+                </div>
+
+                <div class="videos-row">
+
+                    <!-- كرت الفيديو الأول (تصميم حسيني) -->
+                    <!-- 🧠 الميزة هنا: الوسم يقرأ ملف الـ mp4 ويعرض أول لقطة منه كشكل خلفية تلقائياً -->
+                    <div class="k1" onclick="openVideoPlayer(this, 'f4125ea9-773d-4a59-a54b-aa1f59f00aa1.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="f4125ea9-773d-4a59-a54b-aa1f59f00aa1.mp4" preload="metadata"></video>
+                            <span class="e1">--:--</span> <!-- تحسب المدة تلقائياً -->
+                        </div>
+                        <h2 class="f1">
+                            تصميم حسيني <br>
+                            <div class="k2">
+                                عباس ملكي فاين <br>
+                                1000 مشاهدة
+                            </div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت الفيديو الثاني بجانبه مباشرة (مثال: فيديو رياضيات حيدر وليد) -->
+                    <!-- ⚠️ غير اسم 'math.mp4' لاسم ملف الفيديو الثاني الحقيقي المكتوب بجهازك -->
+                    <div class="k1" onclick="openVideoPlayer(this, 'math.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="math.mp4" preload="metadata"></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            الخامس العلمي / اللوغاريتمات / محاضرة 8 <br>
+                            <div class="k2">
+                                حيدر وليد ☑️ <br>
+                                899 ألف مشاهدة
+                            </div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت الفيديو الثالث بجانبه مباشرة (مثال: فيديو بث مباشر) -->
+                    <!-- ⚠️ غير اسم 'live.mp4' لاسم ملف الفيديو الثالث الحقيقي المكتوب بجهازك -->
+                    <div class="k1" onclick="openVideoPlayer(this, 'live.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="live.mp4" preload="metadata"></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            بث حدث باور من قلب ميامي ! <br>
+                            <div class="k2">
+                                SXB LIVE <br>
+                                6.4 ألف مشاهدة
+                            </div>
+                        </h2>
+                    </div>
+
+                </div>
+            </div> <!-- إغلاق صندوق الصفحة الرئيسية -->
+
+
+            <!-- ======================================================== -->
+            <!-- الواجهة الثانية المفرغة: تحتوي فقط على الشاشة الكبيرة والإعجابات -->
+            <!-- ======================================================== -->
+            <div class="watch-page-container" id="watch-section">
+                <div class="right-video-column">
+
+                    <!-- مشغل الفيديو العريض صوت وصورة حقيقية -->
+                    <div class="video-player-box">
+                        <video id="mainVideoPlayer" controls playsinline></video>
+                    </div>
+
+                    <!-- عنوان الفيديو والبيانات أسفل الفيديو مباشرة ومحدثة برمجياً -->
+                    <div class="sss">
+                        <h2 id="currentVideoTitle">تصميم حسيني</h2>
+                        <p class="jkj" id="currentChannel">عباس ملكي فاين</p>
+                        <p class="jkj" id="currentViews">6.700 مشاهدة</p>
+                    </div>
+
+                    <!-- أزرار التفاعل (اللايك، المشاركة والرجوع للرئيسية) المتتالية لأسفل -->
+                    <div class="lll">
+                        <button class="qqq1" onclick="triggerLikeVideo()">👍 الإعجاب</button>
+                        <button class="qqq1">🔔 الاشتراك</button>
+                        <button class="qqq1">🔄 مشاركة</button>
+                        <button class="qqq1">❓ طرح سؤال</button>
+                        <button class="qqq1">⬇️ تنزيل</button>
+                        <button class="qqq1" onclick="closeVideoPlayer()">🔙 رجوع للرئيسية</button>
+                    </div>
+                </div>
+            </div> <!-- إغلاق watch-section الكلي -->
+
+        </div> <!-- إغلاق main-content الخاص بالجهة اليسرى -->
+    </div> <!-- إغلاق app-container الكلي للموقع -->
+
+
+    <!-- ======================================================== -->
+    <!-- نظام التشغيل الذكي والربط البرمجي لـ JavaScript بدون صور -->
+    <!-- ======================================================== -->
+    <script>
+        // دالة تشغيل الفيديوهات صوت وصورة وسحب بياناتها تلقائياً عند النقر
+        function openVideoPlayer(cardElement, videoFileSrc) {
+            // قراءة النصوص آلياً من الكرت الذي تم الضغط عليه وتجاوز الـ <br>
+            var title = cardElement.querySelector('.f1').innerText.split('\n')[0].trim();
+            var channelInfo = cardElement.querySelector('.k2').innerText.split('\n');
+            var channel = channelInfo[0].trim();
+            var views = channelInfo[1] ? channelInfo[1].trim() : '';
+
+            // تحديث العناوين التوضيحية داخل الشاشة الكبيرة فوراً
+            document.getElementById('currentVideoTitle').innerText = title;
+            document.getElementById('currentChannel').innerText = channel;
+            document.getElementById('currentViews').innerText = views;
+
+            // إخفاء كروت الصفحة الرئيسية تماماً وصعود واجهة الفيديو للأعلى بجانب القائمة
+            document.getElementById('home-view-container').style.display = 'none';
+            // فتح واجهة المشاهدة المفرغة في أعلى الصفحة بجانب القائمة
+            document.getElementById('watch-section').style.display = 'block';
+
+            // تشغيل ملف الفيديو كعرض مرئي وصوت وصورة حقيقية فوراً
+            var player = document.getElementById('mainVideoPlayer');
+            if (player) {
+                player.src = videoFileSrc;
+                player.load();
+                player.play();
+            }
+
+            // التسجيل التلقائي الذاتي في السجل وفي قائمة المشاهدة لاحقاً بمجرد النقر
+            saveToHistory(title, channel, views, videoFileSrc);
+            saveToWatchLater(title, channel, views, videoFileSrc);
+        }
+
+        // دالة العودة للرئيسية وإيقاف وتفريغ الفيديو تماماً لتجنب ثقل المتصفح
+        function closeVideoPlayer() {
+            var player = document.getElementById('mainVideoPlayer');
+            if (player) {
+                player.pause();
+                player.src = "";
+                player.load();
+            }
+
+            document.getElementById('watch-section').style.display = 'none';
+            document.getElementById('home-view-container').style.display = 'block';
+        }
+
+        // الحفظ التلقائي الذاتي في ذاكرة المتصفح للمشاهدة لاحقاً
+        function saveToWatchLater(title, channel, views, src) {
+            var list = JSON.parse(localStorage.getItem('watchLaterList')) || [];
+            var isExist = list.some(function (item) { return item.title === title; });
+            if (!isExist) {
+                list.push({ title: title, channel: channel, views: views, src: src });
+                localStorage.setItem('watchLaterList', JSON.stringify(list));
+            }
+        }
+
+        // الحفظ التلقائي الذاتي داخل سجل المشاهدة ⟲
+        function saveToHistory(title, channel, views, src) {
+            var list = JSON.parse(localStorage.getItem('youtubeHistory')) || [];
+            list.unshift({ title: title, channel: channel, views: views, src: src });
+            if (list.length > 20) list.pop();
+            localStorage.setItem('youtubeHistory', JSON.stringify(list));
+        }
+
+        // دالة حفظ بيانات الفيديوهات التي نالت إعجابك عند نقر زر اللايك
+        function triggerLikeVideo() {
+            var title = document.getElementById('currentVideoTitle').innerText;
+            var channel = document.getElementById('currentChannel').innerText;
+            var views = document.getElementById('currentViews').innerText;
+            var player = document.getElementById('mainVideoPlayer');
+
+            var list = JSON.parse(localStorage.getItem('youtubeLiked')) || [];
+            var isExist = list.some(function (item) { return item.title === title; });
+
+            if (!isExist) {
+                list.push({ title: title, channel: channel, views: views, src: player.src });
+                localStorage.setItem('youtubeLiked', JSON.stringify(list));
+                alert("تم إضافة الفيديو إلى الفيديوهات التي أعجبتك 👍");
+            } else {
+                alert("هذا الفيديو موجود بالفعل في قائمة الإعجابات!");
+            }
+        }
+
+        // دوال استعراض الفيديوهات المخزنة عند النقر على خيارات القائمة الجانبية اليمنى
+        function showWatchLaterVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('watchLaterList')) || [];
+            renderCustomList("🕒 قائمة المشاهدة لاحقاً الخاصة بك:", list);
+        }
+
+        function showHistoryVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('youtubeHistory')) || [];
+            renderCustomList("⟲ سجل المشاهدة (آخر ما تابعته):", list);
+        }
+
+        function showLikedVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('youtubeLiked')) || [];
+            renderCustomList("👍 الفيديوهات التي نالت إعجابك:", list);
+        }
+
+        // دالة إعادة بناء كروت الفردية لعرض القوائم المخزنة بالصفحة الرئيسية بدون صور
+        function renderCustomList(headerText, list) {
+            var container = document.getElementById('home-view-container');
+            if (list.length === 0) {
+                container.innerHTML = `<h2 style='padding:20px;'>القائمة فارغة حالياً</h2>`;
+                return;
+            }
+            var html = `<h2 style='width:100%; padding-right:10px;'>${headerText}</h2><div class="videos-row">`;
+            list.forEach(function (video) {
+                html += `
+                    <div class="k1" onclick="openVideoPlayer(this, '${video.src}')">
+                        <div class="video-thumbnail-wrapper"><video src="${video.src}" preload="metadata"></video><span class="e1">--:--</span></div>
+                        <h2 class="f1">${video.title} <br><div class="k2">${video.channel} <br> ${video.views}</div></h2>
+                    </div>`;
+            });
+            html += "</div>";
+            container.innerHTML = html;
+            updateAllVideoDurations(); // تحديث مدد القوائم المستعرضة آلياً
+        }
+
+        // الـ JavaScript السحري لقراءة المدد الحقيقية من ملفات الـ mp4 ذاتياً وعرضها على الكروت
+        function updateAllVideoDurations() {
+            var videoCards = document.querySelectorAll('.k1');
+            videoCards.forEach(function (card) {
+                var videoEl = card.querySelector('video');
+                var durationSpan = card.querySelector('.e1');
+
+                if (videoEl && durationSpan) {
+                    videoEl.onloadedmetadata = function () {
+                        var totalSeconds = Math.floor(videoEl.duration);
+                        var minutes = Math.floor(totalSeconds / 60);
+                        var seconds = totalSeconds % 60;
+                        if (seconds < 10) seconds = '0' + seconds;
+                        durationSpan.innerText = minutes + ':' + seconds;
+                    };
+                    if (videoEl.readyState >= 1) {
+                        videoEl.onloadedmetadata();
+                    }
+                }
+            });
+        }
+
+        // تشغيل دالة جلب المدد التلقائية فور اكتمال تحميل عناصر الصفحة
+        window.addEventListener('DOMContentLoaded', updateAllVideoDurations);
+    </script>
+</body>
+
+</html>
