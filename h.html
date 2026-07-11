@@ -16,8 +16,9 @@
         margin: 0;
         padding: 0;
         font-family: sans-serif;
-        background-color: #ffffff;
+        background: linear-gradient(135deg, #211f3b, #160e6d);
         overflow-x: hidden;
+        border-radius: 10px;
         /* يمنع ظهور شريط التمرير الأفقي المزعج في الموبايل */
     }
 
@@ -30,19 +31,20 @@
     /* 2. تنسيقات القائمة الجانبية اليمنى الثابتة */
     /* ======================================================== */
     .popo {
-        background: #ffffff;
+        background: linear-gradient(135deg, #525253, #2e2d3a);
         width: 240px;
         /* استخدام عرض ثابت بالبكسل لضمان ثبات القائمة */
         min-width: 240px;
         padding-left: 10px;
-        border-left: 1px solid #dadada80;
-        height: 100vh;
+        height: 900px;
+
         overflow-y: auto;
         box-sizing: border-box;
+        border-radius: 10px;
     }
 
     .w {
-        color: black;
+        color: rgb(255, 255, 255);
         padding: 10px;
         font-size: 18px;
         /* تم تعديله ليكون مناسباً لجميع الشاشات */
@@ -68,9 +70,9 @@
         flex-grow: 1;
         /* تجعل منطقة المحتوى تأخذ باقي مساحة الشاشة تلقائياً */
         padding: 20px;
-        background: #ffffff;
+        background: linear-gradient(135deg, rgb(65, 59, 52)#859);
         box-sizing: border-box;
-        width: calc(100% - 240px);
+        width: 100%;
     }
 
     /* شريط الفئات المطور ليكون مرناً وسلساً عند التمرير */
@@ -91,7 +93,7 @@
     .d {
         padding: 8px 14px;
         text-decoration: none;
-        color: black;
+        color: rgb(255, 255, 255);
         background: #d4d4d481;
         border-radius: 10px;
         font-size: 14px;
@@ -113,6 +115,7 @@
         width: 100%;
         box-sizing: border-box;
     }
+
 
     /* ======================================================== */
     /* 4. تنسيقات كروت الفيديو الذكية في الصفحة الرئيسية */
@@ -157,9 +160,10 @@
     .f1 {
         font-size: 14px;
         margin: 10px 0 5px 0;
-        color: black;
+        color: rgb(255, 255, 255);
         line-height: 1.4;
         font-weight: bold;
+        border-radius: 10px;
     }
 
     .k2 {
@@ -358,9 +362,41 @@
             <p class="w">عمليات التنزيل⬇️</p>
         </div>
 
+        <style>
+            .ff {
+                text-align: center;
+                border-radius: 10px;
+
+            }
+
+            .yeu {
+                font-size: 20px;
+                border-radius: 20px;
+                text-align: center;
+                border: none;
+                width: 45%;
+                background: #00000073;
+                color: #cccccc;
+                border-right: 6px solid #160e6d;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                /* لجعل الصورة دائرية */
+                object-fit: cover;
+                /* لكي لا تتشوه أبعاد الصورة */
+            }
+        </style>
         <!-- الجهة اليسرى الكلية للمحتوى -->
         <div class="main-content">
+            <img src="0.jpg" class="user-avatar" alt="الصورة الشخصية">
 
+            <div class="ff">
+                <input class="yeu" type="text" placeholder="ابحث ">
+            </div>
+            <hr>
             <!-- الواجهة الأولى: الصفحة الرئيسية (تحتوي على الكروت الستة المعروضة في صورتك) -->
             <div id="home-view-container">
                 <div class="categories-bar">
@@ -540,7 +576,8 @@
                     <!-- عنوان الفيديو والبيانات أسفل الفيديو مباشرة ومحدثة برمجياً -->
                     <div class="sss">
                         <h2 id="currentVideoTitle" style="margin:0;">عنوان الفيديو</h2>
-                        <p id="currentChannel" style="margin:5px 0 0 0; font-weight:bold; color:black;">اسم القناة</p>
+                        <p id="currentChannel" style="margin:5px 0 0 0; font-weight:bold; color:rgb(0, 17, 255);">اسم
+                            القناة</p>
                         <p class="jkj" id="currentViews"> </p>
                     </div>
                     <style>
