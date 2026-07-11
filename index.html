@@ -1,148 +1,761 @@
 <!DOCTYPE html>
-<html lang="en">
 <html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>قناة عباس ملكي</title>
+    <title> قناة عباس ملكي </title>
 </head>
-
-
 <style>
+    /* ======================================================== */
+    /* 1. التنسيقات العامة والأساسية للموقع */
+    /* ======================================================== */
+    /* 1. التنسيقات العامة والأساسية للموقع */
+    /* ======================================================== */
     body {
-        background: linear-gradient(135deg, #3d815f, #2cff8b);
-        height: 100vh;
-    }
-
-    h1 {
-        text-align: center;
-        margin: 100px auto;
-        background: #347485;
-        height: 40px;
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        background: linear-gradient(135deg, #211f3b, #160e6d);
+        overflow-x: hidden;
         border-radius: 10px;
-        border-right: 30px solid #ff891a;
+        /* يمنع ظهور شريط التمرير الأفقي المزعج في الموبايل */
     }
 
-    .q1 {
+    .app-container {
+        display: flex;
+        width: 100%;
+    }
 
-        background: rgb(243, 243, 243);
-        width: 90%;
-        height: 30px;
-        /* تم تقليل الارتفاع ليناسب شريط التقدم */
+    /* ======================================================== */
+    /* 2. تنسيقات القائمة الجانبية اليمنى الثابتة */
+    /* ======================================================== */
+    .popo {
+        background: linear-gradient(135deg, #525253, #2e2d3a);
+        width: 240px;
+        /* استخدام عرض ثابت بالبكسل لضمان ثبات القائمة */
+        min-width: 240px;
+        padding-left: 10px;
+        height: 900px;
+
+        overflow-y: auto;
+        box-sizing: border-box;
         border-radius: 10px;
-        margin: 240px auto;
-        /* حواف دائرية للشريط الخارجي */
-
-        /* لتوسيط الشريط في منتصف الصفحة */
-
-
     }
 
-    .q2 {
-        background: rgb(40, 34, 122);
-        width: 90%;
+    .w {
+        color: rgb(255, 255, 255);
+        padding: 10px;
+        font-size: 18px;
+        /* تم تعديله ليكون مناسباً لجميع الشاشات */
+        margin: 0;
+    }
+
+    .w:hover {
+        background: #cccccc;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    hr {
+        border: 0;
+        border-top: 1px solid #dadada80;
+        margin: 10px 0;
+    }
+
+    /* ======================================================== */
+    /* 3. تنسيقات الجهة اليسرى (منطقة المحتوى الرئيسية) */
+    /* ======================================================== */
+    .main-content {
+        flex-grow: 1;
+        /* تجعل منطقة المحتوى تأخذ باقي مساحة الشاشة تلقائياً */
+        padding: 20px;
+        background: linear-gradient(135deg, rgb(65, 59, 52)#859);
+        box-sizing: border-box;
+        width: 100%;
+    }
+
+    /* شريط الفئات المطور ليكون مرناً وسلساً عند التمرير */
+    .categories-bar {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        /* يتيح سحب الفئات باليد في الموبايل */
+        white-space: nowrap;
+        padding-bottom: 10px;
+    }
+
+    /* إخفاء شريط التمرير السفلي للفئات لمظهر أنيق */
+    .categories-bar::-webkit-scrollbar {
+        height: 0px;
+    }
+
+    .d {
+        padding: 8px 14px;
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+        background: #d4d4d481;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        flex-shrink: 0;
+    }
+
+    .d:hover {
+        background: #cccccc;
+    }
+
+    /* صندوق شبكة الفيديوهات (تم تحويله إلى Grid لتوزيع ديناميكي ذكي) */
+    .videos-row {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        /* 4 فيديوهات في السطر على الشاشات الكبيرة والتلفزيون */
+        gap: 20px;
+        margin-top: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    /* ======================================================== */
+    /* 4. تنسيقات كروت الفيديو الذكية في الصفحة الرئيسية */
+    /* ======================================================== */
+    .k1 {
+        position: relative;
+        width: 100%;
+        /* يعتمد بالكامل على حجم الـ Grid المتجاوب */
+        cursor: pointer;
+    }
+
+    .video-thumbnail-wrapper {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        background: #000;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .video-thumbnail-wrapper video {
+        width: 100%;
         height: 100%;
-        border-radius: 10px;
-        /* تم تعديل الأنميشن ليتوافق مع السرعات الجديدة في 12 ثانية تقريباً */
-        animation: uyuy 12s linear forwards;
-
+        object-fit: cover;
+        display: block;
+        pointer-events: none;
     }
 
-    /* تحديث الأنميشن ليتوافق مع حركات السرعة والبطء التي طلبتها */
-    @keyframes uyuy {
-        0% {
-            width: 0%;
+    .e1 {
+        position: absolute;
+        bottom: 8px;
+        left: 8px;
+        background: #141414e0;
+        color: #ffffff;
+        border-radius: 4px;
+        padding: 3px 6px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 2;
+    }
+
+    .f1 {
+        font-size: 14px;
+        margin: 10px 0 5px 0;
+        color: rgb(255, 255, 255);
+        line-height: 1.4;
+        font-weight: bold;
+        border-radius: 10px;
+    }
+
+    .k2 {
+        font-size: 12px;
+        color: #606060;
+        margin-top: 4px;
+    }
+
+    /* ======================================================== */
+    /* 5. التنسيقات المصلحة لإلغاء المساحة الفارغة نهائياً */
+    /* ======================================================== */
+    .watch-page-container {
+        display: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .watch-flex-wrapper {
+        display: block;
+        width: 100%;
+    }
+
+    .right-video-column {
+        width: 100% !important;
+    }
+
+    .video-player-box video {
+        width: 100% !important;
+        max-width: 100%;
+        border-radius: 12px;
+        display: block;
+        background: #000;
+        aspect-ratio: 16 / 9;
+    }
+
+    .sss {
+        width: 100%;
+        background: #ffffff;
+        height: auto;
+        margin-top: 15px;
+    }
+
+    .jkj {
+        color: #aaa6a6;
+        margin: 5px 0;
+    }
+
+    .lll {
+        gap: 10px;
+        display: flex;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
+        width: 100%;
+    }
+
+    .qqq1 {
+        font-size: 14px;
+        padding: 8px 16px;
+        font-weight: bold;
+        border-radius: 10px;
+        white-space: nowrap;
+        border: none;
+        background: #e7e7e7d0;
+        cursor: pointer;
+        flex-grow: 1;
+        /* تجعل الأزرار تتمدد وتملأ السطر في الموبايل */
+        text-align: center;
+    }
+
+    .qqq1:hover {
+        background: #cccccc93;
+    }
+
+    /* ======================================================== */
+    /* 6. شفرات التجاوب السحرية (Media Queries) لجميع الأجهزة */
+    /* ======================================================== */
+
+    /* شاشات اللابتوب المتوسطة والآيباد العريض */
+    @media (max-width: 1200px) {
+        .videos-row {
+            grid-template-columns: repeat(3, 1fr);
+            /* تظهر 3 فيديوهات في السطر */
         }
 
-        15% {
-            width: 10%;
+        .popo {
+            width: 200px;
+            min-width: 200px;
+        }
+    }
+
+    /* شاشات التابلت والآيباد العمودي */
+    @media (max-width: 900px) {
+        .videos-row {
+            grid-template-columns: repeat(2, 1fr);
+            /* يظهر فيديوين فقط في السطر */
+        }
+    }
+
+    /* شاشات جميع الهواتف والموبايلات الذكية */
+    @media (max-width: 600px) {
+        .app-container {
+            flex-direction: column;
+            /* تحويل القائمة لتصبح بالأسفل أو تختفي ليظهر المحتوى */
         }
 
-        /* طبيعي إلى 10% */
-        50% {
-            width: 20%;
-        }
-
-        /* يتأخر ويتباطأ للـ 20% */
-        55% {
-            width: 40%;
-        }
-
-        /* كبل سريع للـ 40% */
-        75% {
-            width: 50%;
-        }
-
-        /* شوية شوية للـ 50% */
-        80% {
-            width: 80%;
-        }
-
-        /* كبل سريع للـ 80% */
-        95% {
-            width: 90%;
-        }
-
-        /* يتباطأ شوية للـ 90% */
-        100% {
+        .popo {
             width: 100%;
+            height: auto;
+            border-left: none;
+            border-top: 1px solid #dadada80;
+            display: flex;
+            /* تحويل القائمة الجانبية لشريط سفلي كالموبايل حقيقي */
+            overflow-x: auto;
+            white-space: nowrap;
+            order: 2;
+            /* وضع القائمة أسفل الشاشة */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 9999;
+            height: 60px;
+            padding: 0;
         }
 
-        /* كبل سريع للـ 100% */
+        .popo::-webkit-scrollbar {
+            height: 0px;
+        }
+
+        .popo img,
+        .popo h1,
+        .popo hr,
+        .popo p:nth-child(n+7) {
+            display: none;
+            /* إخفاء العناصر الزائدة في شريط الموبايل السفلي */
+        }
+
+        .popo .w {
+            font-size: 14px;
+            padding: 15px;
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .main-content {
+            width: 100%;
+            padding: 10px;
+            padding-bottom: 80px;
+            /* مساحة إضافية لمنع اختفاء الكروت خلف شريط الموبايل */
+        }
+
+        .videos-row {
+            grid-template-columns: repeat(1, 1fr);
+            /* يظهر فيديو واحد عريض يملأ الشاشة في الموبايل */
+            gap: 15px;
+        }
+
+        .f1 {
+            font-size: 13px;
+        }
+
+        .qqq1 {
+            font-size: 12px;
+            padding: 8px 10px;
+        }
+    }
+
+    /* شاشات التلفزيون الكبيرة جداً */
+    @media (min-width: 1900px) {
+        .videos-row {
+            grid-template-columns: repeat(5, 1fr);
+            /* تظهر 5 فيديوهات على السطر في شاشات الـ 4K والتلفزيون */
+            gap: 30px;
+        }
     }
 </style>
 
-
 <body>
-    <div>
-        <h1>جار تنزيل قناة عباس ملكي </h1>
-    </div>
 
-    <div class="q1">
+    <div class="app-container" id="main-interface">
 
-        <div class="q2">
-            <div class="q3"> <span id="percent-text" style="color: #ff0000;">0%</span></div>
+        <!-- الجهة الأولى: القائمة الجانبية اليمنى الثابتة مالتك -->
+        <div class="popo">
+            <img src="vecteezy_hamburger-menu-filled-icon-in-transparent-background-basic_21190402.jpg" class="oo"
+                alt="" width="50px">
+            <p class="w" onclick="closeVideoPlayer()">صفحه رئيسية⌂</p>
+            <h1 class="w">shorts</h1>
+
+            <hr>
+            <p class="w">انت></p>
+            <p class="w">قناتك👤</p>
+            <p class="w" onclick="showHistoryVideos()">سجل⟲ </p>
+            <p class="w" onclick="showWatchLaterVideos()">المشاهدةلاحقاء🕒</p>
+            <p class="w" onclick="showLikedVideos()">الفيديوهات التي اعجبتني👍</p>
+            <p class="w">فيديوهات🎬</p>
+            <p class="w">عمليات التنزيل⬇️</p>
         </div>
 
-    </div>
+        <style>
+            .ff {
+                text-align: center;
+                border-radius: 10px;
 
-    <!-- كود الجافاسكريبت المحدث للتحكم بالسرعات والانتقال السلس -->
+            }
+
+            .yeu {
+                font-size: 20px;
+                border-radius: 20px;
+                text-align: center;
+                border: none;
+                width: 45%;
+                background: #00000073;
+                color: #cccccc;
+                border-right: 6px solid #160e6d;
+            }
+
+            .user-avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                /* لجعل الصورة دائرية */
+                object-fit: cover;
+                /* لكي لا تتشوه أبعاد الصورة */
+            }
+        </style>
+        <!-- الجهة اليسرى الكلية للمحتوى -->
+        <div class="main-content">
+            <img src="0.jpg" class="user-avatar" alt="الصورة الشخصية">
+
+            <div class="ff">
+                <input class="yeu" type="text" placeholder="ابحث ">
+            </div>
+            <hr>
+            <!-- الواجهة الأولى: الصفحة الرئيسية (تحتوي على الكروت الستة المعروضة في صورتك) -->
+            <div id="home-view-container">
+                <div class="categories-bar">
+                    <a class="d" href="#">كل محتوى </a>
+                    <a class="d" href="#">مباشر</a>
+                    <a class="d" href="#">برامج كوميدية</a>
+                </div>
+
+                <div class="videos-row">
+
+                    <!-- كرت فيديو 1 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '1.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="1.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت فيديو 2 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '2.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="2.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت فيديو 3 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '3.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="3.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت فيديو 4 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '4.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="4.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت فيديو 5 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '5.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="5.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+                    <!-- كرت فيديو 6 -->
+                    <div class="k1" onclick="openVideoPlayer(this, '6.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="6.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '7.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="7.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '8.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="8.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '9.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="9.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '10.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="10.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '11.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="12.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '13.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="14.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '15.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="15.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+                    <div class="k1" onclick="openVideoPlayer(this, '16.mp4')">
+                        <div class="video-thumbnail-wrapper">
+                            <video src="16.mp4#t=10" preload="metadata" muted></video>
+                            <span class="e1">--:--</span>
+                        </div>
+                        <h2 class="f1">
+                            2026 تصميم حسيني <br>
+                            <div class="k2">عباس ملكي فاين</div>
+                        </h2>
+                    </div>
+
+
+                </div>
+            </div> <!-- إغلاق صندوق الصفحة الرئيسية -->
+
+
+            <!-- الواجهة الثانية العريضة والمفرغة بالكامل -->
+            <div class="watch-page-container" id="watch-section">
+                <div class="right-video-column">
+
+                    <!-- مشغل الفيديو العريض صوت وصورة حقيقية -->
+                    <div class="video-player-box">
+                        <video id="mainVideoPlayer" controls playsinline></video>
+                    </div>
+
+                    <!-- عنوان الفيديو والبيانات أسفل الفيديو مباشرة ومحدثة برمجياً -->
+                    <div class="sss">
+                        <h2 id="currentVideoTitle" style="margin:0;">عنوان الفيديو</h2>
+                        <p id="currentChannel" style="margin:5px 0 0 0; font-weight:bold; color:rgb(0, 17, 255);">اسم
+                            القناة</p>
+                        <p class="jkj" id="currentViews"> </p>
+                    </div>
+                    <style>
+                        a {
+                            text-decoration: none;
+                            color: #000;
+                        }
+                    </style>
+                    <!-- أزرار التفاعل والتحكم والعودة للرئيسية المتتالية لأسفل -->
+                    <div class="lll">
+                        <button class="qqq1" onclick="triggerLikeVideo()">👍 الإعجاب</button>
+                        <button class="qqq1"><a href="https://www.youtube.com/@abass-l8q">🔔 الاشتراك</a></button>
+                        <button class="qqq1">🔄 مشاركة</button>
+                        <button class="qqq1">❓ طرح سؤال</button>
+                        <button class="qqq1">⬇️ تنزيل</button>
+                        <button class="qqq1" onclick="closeVideoPlayer()">🔙 رجوع للرئيسية</button>
+                    </div>
+                </div>
+            </div> <!-- إغلاق watch-section الكلي -->
+
+        </div> <!-- إغلاق main-content الخاص بالجهة اليسرى الكلية -->
+    </div> <!-- إغلاق app-container الكلي للموقع -->
+
+
+    <!-- ======================================================== -->
+    <!-- نظام التشغيل الذكي والربط البرمجي لـ JavaScript بدون صور -->
+    <!-- ======================================================== -->
     <script>
-        const percentSpan = document.getElementById('percent-text');
+        function openVideoPlayer(cardElement, videoFileSrc) {
+            try {
+                // سحب النص النظيف والسطر الأول فقط كعنوان منعاً للتكرار
+                var titleText = cardElement.querySelector('.f1') ? cardElement.querySelector('.f1').innerText : 'بدون عنوان';
+                var title = titleText.split('\n')[0].trim();
 
-        // مصفوفة تحدد الوقت بالملي ثانية لكل نسبة مئوية لمحاكاة الحركة بدقة
-        function getDelay(current) {
-            if (current >= 10 && current < 20) return 350;  /* يضل يتاخر شويه لل 20 */
-            if (current >= 20 && current < 40) return 25;   /* كبل سريع لل 40 */
-            if (current >= 40 && current < 50) return 200;  /* شويه شويه يوصل لل 50 */
-            if (current >= 50 && current < 80) return 15;   /* كبل 80 */
-            if (current >= 80 && current < 90) return 150;  /* شويه لل 90 */
-            if (current >= 90 && current < 100) return 30;  /* كبل لل 100 */
-            return 100; // السرعة الافتراضية من 0 لـ 10
-        }
+                var channel = 'عباس ملكي فاين';
+                var views = ' ';
+                var k2Element = cardElement.querySelector('.k2');
 
-        let currentPercent = 0;
-
-        function updateProgress() {
-            if (currentPercent <= 100) {
-                percentSpan.innerText = currentPercent + "%";
-
-                if (currentPercent === 100) {
-                    // الانتقال فوراً عند الوصول إلى 100%
-                    setTimeout(() => {
-                        window.location.href = "h.html";
-                    }, 300);
-                    return;
+                if (k2Element) {
+                    channel = k2Element.innerText.trim();
                 }
 
-                currentPercent++;
-                setTimeout(updateProgress, getDelay(currentPercent));
+                // تحديث العناوين التوضيحية داخل الشاشة الكبيرة فوراً بنصوص نقية
+                document.getElementById('currentVideoTitle').innerText = title;
+                document.getElementById('currentChannel').innerText = channel;
+                document.getElementById('currentViews').innerText = views;
+
+                // إخفاء كروت الصفحة الرئيسية وصعود واجهة الفيديو للأعلى بجانب القائمة
+                document.getElementById('home-view-container').style.display = 'none';
+                document.getElementById('watch-section').style.display = 'block';
+
+                // تشغيل الفيديو صوت وصورة مرئية حقيقية فوراً في الشاشة الكبيرة
+                var player = document.getElementById('mainVideoPlayer');
+                player.src = videoFileSrc;
+                player.load();
+                player.play();
+
+                // التسجيل التلقائي في السجل وفي قائمة المشاهدة لاحقاً بالخلفية
+                saveToHistory(title, channel, views, videoFileSrc);
+                saveToWatchLater(title, channel, views, videoFileSrc);
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء تشغيل الفيديو: ", error);
             }
         }
 
-        // بدء التشغيل
-        setTimeout(updateProgress, 100);
+        function closeVideoPlayer() {
+            var player = document.getElementById('mainVideoPlayer');
+            if (player) {
+                player.pause();
+                player.src = ""; // تفريغ المسار تماماً ليعود المتصفح سريعاً وخفيفاً فوراً
+                player.load();
+            }
+
+            document.getElementById('watch-section').style.display = 'none';
+            document.getElementById('home-view-container').style.display = 'block';
+        }
+
+        // الحفظ التلقائي الذاتي بذاكرة المتصفح للمشاهدة لاحقاً
+        function saveToWatchLater(title, channel, views, src) {
+            var list = JSON.parse(localStorage.getItem('watchLaterList')) || [];
+            var isExist = list.some(function (item) { return item.title === title; });
+            if (!isExist) {
+                list.push({ title: title, channel: channel, views: views, src: src });
+                localStorage.setItem('watchLaterList', JSON.stringify(list));
+            }
+        }
+
+        // الحفظ التلقائي الذاتي داخل سجل المشاهدة ⟲
+        function saveToHistory(title, channel, views, src) {
+            var list = JSON.parse(localStorage.getItem('youtubeHistory')) || [];
+            list.unshift({ title: title, channel: channel, views: views, src: src });
+            if (list.length > 20) list.pop();
+            localStorage.setItem('youtubeHistory', JSON.stringify(list));
+        }
+
+        // دالة حفظ الإعجابات
+        function triggerLikeVideo() {
+            var title = document.getElementById('currentVideoTitle').innerText;
+            var channel = document.getElementById('currentChannel').innerText;
+            var views = document.getElementById('currentViews').innerText;
+            var player = document.getElementById('mainVideoPlayer');
+
+            var list = JSON.parse(localStorage.getItem('youtubeLiked')) || [];
+            var isExist = list.some(function (item) { return item.title === title; });
+
+            if (!isExist) {
+                list.push({ title: title, channel: channel, views: views, src: player.src });
+                localStorage.setItem('youtubeLiked', JSON.stringify(list));
+                alert("تم إضافة الفيديو إلى الفيديوهات التي أعجبتك 👍");
+            } else {
+                alert("هذا الفيديو موجود بالفعل في قائمة الإعجابات!");
+            }
+        }
+
+        // دوال الاستعراض عند ضغط خيارات القائمة الجانبية اليمنى
+        function showWatchLaterVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('watchLaterList')) || [];
+            renderCustomList("🕒 قائمة المشاهدة لاحقاً الخاصة بك:", list);
+        }
+
+        function showHistoryVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('youtubeHistory')) || [];
+            renderCustomList("⟲ سجل المشاهدة (آخر ما تابعته):", list);
+        }
+
+        function showLikedVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            var list = JSON.parse(localStorage.getItem('youtubeLiked')) || [];
+            renderCustomList("👍 الفيديوهات التي نالت إعجابك:", list);
+        }
+
+        function renderCustomList(headerText, list) {
+            var container = document.getElementById('home-view-container');
+            if (list.length === 0) {
+                container.innerHTML = `<h2 style='padding:20px;'>القائمة فارغة حالياً</h2>`;
+                return;
+            }
+            var html = `<h2 style='width:100%; padding-right:10px;'>${headerText}</h2><div class="videos-row">`;
+            list.forEach(function (video) {
+                html += `
+                    <div class="k1" onclick="openVideoPlayer(this, '${video.src}')">
+                        <div class="video-thumbnail-wrapper"><video src="${video.src}#t=10" preload="metadata" muted></video><span class="e1">--:--</span></div>
+                        <h2 class="f1">${video.title} <br><div class="k2">${video.channel}</div></h2>
+                    </div>`;
+            });
+            html += "</div>";
+            container.innerHTML = html;
+            updateAllVideoDurations();
+        }
+
+        // الـ JavaScript المطور لقراءة المدد الحقيقية تلقائياً من ملفات الـ mp4
+        function updateAllVideoDurations() {
+            var videoCards = document.querySelectorAll('.k1');
+            videoCards.forEach(function (card) {
+                var videoEl = card.querySelector('video');
+                var durationSpan = card.querySelector('.e1');
+
+                if (videoEl && durationSpan) {
+                    var cleanSrc = videoEl.getAttribute('src').split('#')[0];
+                    var tempVideo = document.createElement('video');
+                    tempVideo.src = cleanSrc;
+                    tempVideo.preload = "metadata";
+
+                    tempVideo.onloadedmetadata = function () {
+                        var totalSeconds = Math.floor(tempVideo.duration);
+                        var minutes = Math.floor(totalSeconds / 60);
+                        var seconds = totalSeconds % 60;
+                        if (seconds < 10) seconds = '0' + seconds;
+                        durationSpan.innerText = minutes + ':' + seconds;
+                    };
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', updateAllVideoDurations);
     </script>
 </body>
 
