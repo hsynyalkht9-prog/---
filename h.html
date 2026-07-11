@@ -362,6 +362,7 @@
             <p class="w">عمليات التنزيل⬇️</p>
         </div>
 
+
         <style>
             .ff {
                 text-align: center;
@@ -592,13 +593,62 @@
                         <button class="qqq1"><a href="https://www.youtube.com/@abass-l8q">🔔 الاشتراك</a></button>
                         <button class="qqq1">🔄 مشاركة</button>
                         <button class="qqq1">❓ طرح سؤال</button>
-                        <button class="qqq1">⬇️ تنزيل</button>
+                        <!-- زر التنزيل الجديد -->
+                        <button class="qqq1" onclick="startDownloadSimulation()">⬇️ تنزيل</button>
+
                         <button class="qqq1" onclick="closeVideoPlayer()">🔙 رجوع للرئيسية</button>
                     </div>
-                </div>
-            </div> <!-- إغلاق watch-section الكلي -->
+                    <br>
+                    <br>
+                    <br>
+                    <style>
+                        /* شريط التقدم مخفي تلقائياً في البداية */
+                        .v {
+                            border-radius: 10px;
+                            width: 100%;
+                            height: 3px;
+                            display: none;
+                            /* تم إخفاء الشريط هنا ليظهر فقط عند التنزيل */
+                        }
 
-        </div> <!-- إغلاق main-content الخاص بالجهة اليسرى الكلية -->
+                        .bbf {
+                            background: #ffffff;
+                            border-radius: 10px;
+                            width: 0%;
+                            /* يبدأ من 0% عند التنزيل */
+                            height: 3px;
+                            transition: width 0.1s linear;
+                        }
+
+                        .pppppp {
+                            background: #ff7300;
+                            border: 1px solid #62ffd8;
+                            border-radius: 2px;
+                            padding: 2px;
+                        }
+                    </style>
+
+                    <!-- شريط التقدم في هيكل الصفحة -->
+                    <div class="v" id="downloadProgressBarContainer">
+                        <div class="bbf" id="downloadProgressBar">
+                            <span class="pppppp" id="downloadProgressText">0%</span>
+                        </div>
+                    </div>
+
+                    </style>
+
+                    <div class="v">
+
+                        <div class="bbf">
+                            <span class="pppppp">0%</span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div> <!-- إغلاق watch-section الكلي -->
+
+    </div> <!-- إغلاق main-content الخاص بالجهة اليسرى الكلية -->
     </div> <!-- إغلاق app-container الكلي للموقع -->
 
 
@@ -756,6 +806,128 @@
         }
 
         window.addEventListener('DOMContentLoaded', updateAllVideoDurations);
+        function startDownloadSimulation() {
+            // 1. جلب العناصر الأصلية الخاصة بك من التصميم
+            var progressContainer = document.querySelector('.v');
+            var progressBar = document.querySelector('.bbf');
+            var progressText = document.querySelector('.pppppp');
+            var player = document.getElementById('mainVideoPlayer');
+
+            if (!progressContainer || !progressBar || !progressText) {
+                alert("خطأ: لم يتم العثور على عناصر شريط التقدم الأصلية!");
+                return;
+            }
+
+            // إظهار الشريط فوراً عند بدء التنزيل
+            progressContainer.style.display = 'block';
+
+            var percentage = 0;
+
+            function advanceProgress() {
+                if (percentage <= 100) {
+                    // تحديث النسبة المئوية والشريط الأصلي الخاص بك
+                    progressBar.style.width = percentage + '%';
+                    progressText.innerText = percentage + '%';
+
+                    // التحكم بالسرعات المتغيرة حسب طلبك
+                    var delay = 100;
+                    if (percentage >= 1 && percentage <= 20) {
+                        delay = 40;   // من 1 إلى 20: تمشي سريع
+                    } else if (percentage > 20 && percentage <= 40) {
+                        delay = 140;  // من 20 إلى 40: تتأخر شوية
+                    } else if (percentage > 40 && percentage <= 80) {
+                        delay = 240;  // من 50 إلى 80: تمشي على كيفها
+                    } else if (percentage > 80 && percentage <= 100) {
+                        delay = 25;   // من 80 إلى 100: تمشي أسرع شي
+                    }
+
+                    percentage++;
+                    setTimeout(advanceProgress, delay);
+                } else {
+                    // 2. عند اكتمال التنزيل 100%
+                    setTimeout(function () {
+                        // جلب بيانات الفيديو الحالي المفتوح في المشغل
+                        var title = document.getElementById('currentVideoTitle').innerText;
+                        var channel = document.getElementById('currentChannel').innerText;
+                        var views = document.getElementById('currentViews').innerText;
+                        var src = player ? player.src : '';
+
+                        // حفظ الفيديو في قائمة التنزيلات بذاكرة المتصفح
+                        saveToDownloads(title, channel, views, src);
+
+                        // إخفاء الشريط وتصفيره تماماً للمرات القادمة
+                        progressContainer.style.display = 'none';
+                        progressBar.style.width = '0%';
+                        progressText.innerText = '0%';
+
+                        // إغلاق واجهة المشاهدة والانتقال لصفحة التنزيلات
+                        document.getElementById('watch-section').style.display = 'none';
+                        showDownloadsVideos();
+                    }, 600);
+                }
+            }
+
+            // انطلاق عملية التحميل
+            advanceProgress();
+        }
+
+        // دالة حفظ الفيديو المنزّل في الـ LocalStorage
+        function saveToDownloads(title, channel, views, src) {
+            var list = JSON.parse(localStorage.getItem('youtubeDownloads')) || [];
+            var isExist = list.some(function (item) { return item.src === src; });
+            if (!isExist) {
+                list.push({ title: title, channel: channel, views: views, src: src });
+                localStorage.setItem('youtubeDownloads', JSON.stringify(list));
+            }
+        }
+
+        // دالة استعراض الفيديوهات المحملة مع ميزة الحذف التلقائي لكل فيديو
+        function showDownloadsVideos() {
+            document.getElementById('watch-section').style.display = 'none';
+            document.getElementById('home-view-container').style.display = 'block';
+
+            var list = JSON.parse(localStorage.getItem('youtubeDownloads')) || [];
+            var container = document.getElementById('home-view-container');
+
+            if (list.length === 0) {
+                container.innerHTML = `<h2 style='padding:20px;'>⬇️ قائمة التنزيلات فارغة حالياً</h2>`;
+                return;
+            }
+
+            var html = `<h2 style='width:100%; padding-right:10px;'>⬇️ الفيديوهات المحملة:</h2><div class="videos-row">`;
+
+            // بناء الكروت البرمجية مع زر حذف مدمج يشتغل تلقائياً من يضغط عليه المستخدم
+            list.forEach(function (video, index) {
+                html += `
+            <div class="k1" style="position: relative;">
+                <div onclick="openVideoPlayer(this, '${video.src}')">
+                    <div class="video-thumbnail-wrapper">
+                        <video src="${video.src}#t=10" preload="metadata" muted></video>
+                        <span class="e1">--:--</span>
+                    </div>
+                    <h2 class="f1">${video.title} <br><div class="k2">${video.channel}</div></h2>
+                </div>
+                <!-- زر حذف الفيديو من التنزيلات بكيف المستخدم وبضغطة واحدة -->
+                <button onclick="deleteDownloadedVideo(${index})" style="position: absolute; bottom: 10px; left: 10px; background: #ff3333; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 12px; z-index: 10;">❌ حذف</button>
+            </div>`;
+            });
+
+            html += "</div>";
+            container.innerHTML = html;
+            updateAllVideoDurations();
+        }
+
+        // دالة حذف أي فيديو محدد من قائمة التنزيلات مباشرة وتحديث الواجهة تلقائياً
+        function deleteDownloadedVideo(index) {
+            var list = JSON.parse(localStorage.getItem('youtubeDownloads')) || [];
+            // إزالة الفيديو المختار بناءً على رقمه الترتيبي
+            list.splice(index, 1);
+            // تحديث البيانات المخزنة
+            localStorage.setItem('youtubeDownloads', JSON.stringify(list));
+            // إعادة عرض القائمة المحدثة فوراً أمام المستخدم
+            showDownloadsVideos();
+        }
+
     </script>
 </body>
 
